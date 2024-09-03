@@ -3,7 +3,7 @@ import { MongodbAdapter } from "@lucia-auth/adapter-mongodb";
 import { dev } from "$app/environment";
 import { sessions_db, users_db } from "$lib/db/users";
 import type { ObjectId } from "mongodb";
-import { Discord, Twitter } from "arctic";
+import { Discord, generateCodeVerifier, Twitter } from "arctic";
 import { DEV_HOME, DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, DISCORD_REDIRECT_URL_DEV, DISCORD_REDIRECT_URL_PROD, PROD_HOME, TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET, TWITTER_REDIRECT_URL_DEV, TWITTER_REDIRECT_URL_PROD } from "$env/static/private";
 
 const adapter = new MongodbAdapter(sessions_db, users_db); // your adapter
@@ -27,6 +27,7 @@ export const lucia = new Lucia(adapter, {
 
 });
 
+export const CODE_VERIFIER = generateCodeVerifier();
 export const twitter = new Twitter(TWITTER_CLIENT_ID, TWITTER_CLIENT_SECRET, `${dev ? DEV_HOME : PROD_HOME}/login/twitter/callback`);
 export const discord = new Discord(DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, `${dev ? DEV_HOME : PROD_HOME}/login/discord/callback`);
 
